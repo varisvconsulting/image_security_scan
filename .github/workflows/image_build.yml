@@ -198,13 +198,14 @@ jobs:
       - name: Push image
         id: push
         run: |
-          docker push ghcr.io/${{ github.repository }}:${{ github.sha }}
-          docker push ghcr.io/${{ github.repository }}:latest
-          DIGEST=$(docker inspect --format='{{index .RepoDigests 0}}' ghcr.io/${{ github.repository }}:${{ github.sha }} | cut -d'@' -f2)
+          OUTPUT=$(docker push ghcr.io/${{ github.repository }}:${{ github.sha }} 2>&1)
+          echo "$OUTPUT"
+          DIGEST=$(echo "$OUTPUT" | grep -oE 'digest: sha256:[a-f0-9]{64}' | head -1 | cut -d' ' -f2)
           echo "digest=$DIGEST" >> "$GITHUB_OUTPUT"
+          docker push ghcr.io/${{ github.repository }}:latest
 
   attest-sbom:
-    name: attest SBOM
+    name: attest SBOM, provenance, and signing
     runs-on: ubuntu-latest
     needs: 
       - publish
