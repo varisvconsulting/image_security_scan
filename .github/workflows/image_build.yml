@@ -81,3 +81,8 @@ jobs:
         uses: anchore/sbom-action@v0
         with:
           image: 'ghcr.io/${{ github.repository }}:${{ github.sha }}'
+          output-file: 'syft_scan'
+
+      - name: print scan data
+        run: |
+          cat syft_scan
