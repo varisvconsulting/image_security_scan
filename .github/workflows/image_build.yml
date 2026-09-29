@@ -195,6 +195,7 @@ jobs:
             ${{ github.repository }}:${{ github.sha }} \
             ghcr.io/${{ github.repository }}:latest
 
+      #this is the way it is because there are some cases where you are using the local digest while GHCR 
       - name: Push image
         id: push
         run: |
@@ -256,3 +257,10 @@ jobs:
           DIGEST: ${{ needs.publish.outputs.digest }}
         run: |
           cosign sign --yes "${IMAGE}@${DIGEST}"
+
+      - name: Verify image signature
+        run: |
+          cosign verify \
+            ghcr.io/${{ github.repository }}@${{ needs.publish.outputs.digest }} \
+            --certificate-identity="https://github.com/${{ github.repository }}/.github/workflows/YOUR_WORKFLOW.yml@refs/heads/main" \
+            --certificate-oidc-issuer="https://token.actions.githubusercontent.com"
