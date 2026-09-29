@@ -81,16 +81,6 @@ jobs:
         uses: anchore/sbom-action@v0
         with:
           image: 'ghcr.io/${{ github.repository }}:${{ github.sha }}'
-          output-file: 'sbom.spdx.json'
-
-      - name: print sbom
-        run: |
-          cat sbom.spdx.json
-
-      - name: Upload SBOM
-        uses: actions/upload-artifact@v4
-        with:
-          name: sbom
-          path: sbom.spdx.json
+          id: 'sbom-${{ github.run_number }}'
       
         
