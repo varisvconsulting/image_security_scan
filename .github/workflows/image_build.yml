@@ -56,7 +56,6 @@ jobs:
           ignore-unfixed: false
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
-          github-pat: '${{GITHUB_TOKEN}}'
 
   grype-test:
     name: run Grype test
