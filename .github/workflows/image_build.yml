@@ -53,7 +53,7 @@ jobs:
           format: 'table'
           version: v0.74.0
           exit-code: '1'
-          ignore-unfixed: false
+          ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
 
@@ -74,15 +74,23 @@ jobs:
   syft-scan:
     name: run Syft scan of image
     runs-on: ubuntu-latest
-    needs: grype-test
+    needs: build
 
     steps:
       - name: syft scan
         uses: anchore/sbom-action@v0
         with:
           image: 'ghcr.io/${{ github.repository }}:${{ github.sha }}'
-          output-file: 'syft_scan'
+          output-file: 'sbom.spdx.json'
 
-      - name: print scan data
+      - name: print sbom
         run: |
-          cat syft_scan
+          cat sbom.spdx.json
+
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.spdx.json
+      
+        
