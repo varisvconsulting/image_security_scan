@@ -18,6 +18,9 @@ jobs:
       contents: read
       packages: write
 
+    outputs:
+      digest: ${{ steps.build.outputs.digest }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -112,6 +115,6 @@ jobs:
         uses: actions/attest@v4
         with:
           subject-name: ghcr.io/${{ github.repository }}
-          subject-digest: ${{ steps.build.outputs.digest }}
+          subject-digest: ${{ needs.build.outputs.digest }}
           sbom-path: sbom.spdx.json
           push-to-registry: true
