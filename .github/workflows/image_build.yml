@@ -52,6 +52,20 @@ jobs:
           image-ref: 'ghcr.io/${{ github.repository }}:${{ github.sha }}'
           format: 'table'
           exit-code: '1'
-          ignore-unfixed: true
+          ignore-unfixed: false
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
+  grype-test:
+    name: run Grype test
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Scan image
+        uses: anchore/scan-action@v7
+        with:
+          image: 'ghcr.io/${{ github.repository }}:${{ github.sha }}'
+          fail-build: false
+          severity-cutoff: medium
+          output-format: table  
