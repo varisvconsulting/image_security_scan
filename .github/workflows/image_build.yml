@@ -11,8 +11,6 @@ jobs:
     name: Build and push image
     runs-on: ubuntu-latest
 
-    needs: build
-
     # Don't publish images from pull requests.
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
 
