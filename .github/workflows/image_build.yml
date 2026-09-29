@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build-and-push:
+  build:
     name: Build and push initial image
     runs-on: ubuntu-latest
 
