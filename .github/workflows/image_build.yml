@@ -262,5 +262,5 @@ jobs:
         run: |
           cosign verify \
             ghcr.io/${{ github.repository }}@${{ needs.publish.outputs.digest }} \
-            --certificate-identity="https://github.com/${{ github.repository }}/.github/workflows/YOUR_WORKFLOW.yml@refs/heads/main" \
+            --certificate-identity="https://github.com/${{ github.repository }}/.github/workflows/image_build.yml@refs/heads/main" \
             --certificate-oidc-issuer="https://token.actions.githubusercontent.com"
