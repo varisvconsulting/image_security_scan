@@ -94,6 +94,10 @@ jobs:
       attestations: write
 
     steps:
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: syft scan
         uses: anchore/sbom-action@v0
         with:
