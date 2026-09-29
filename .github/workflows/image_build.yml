@@ -243,3 +243,15 @@ jobs:
           subject-name: ghcr.io/${{ github.repository }}
           subject-digest: ${{ needs.publish.outputs.digest }}
           push-to-registry: true
+
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@main
+        with:
+          cosign-release: v3.0.2
+
+      - name: Sign image
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}
+          DIGEST: ${{ needs.publish.outputs.digest }}
+        run: |
+          cosign sign --yes "${IMAGE}@${DIGEST}"
